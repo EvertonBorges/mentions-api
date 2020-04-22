@@ -1,3 +1,6 @@
+// Tutorial: https://woliveiras.com.br/posts/construindo-uma-api-com-node-js-parte-1-criando-e-listando-dados/
+
+const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -33,7 +36,16 @@ process.on('SIGINT', () => {
     });
 });
 
+// Esta parte é importante para poder converter o body que vem nas requisições.
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+const Mentions = require('./models/mentions');
+
 const indexRoutes = require('./routes/index-routes');
 app.use('/', indexRoutes);
+
+const mentionsRoutes = require('./routes/mentions-routes');
+app.use('/mentions', mentionsRoutes);
 
 module.exports = app;
