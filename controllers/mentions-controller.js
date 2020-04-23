@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const Mentions = mongoose.model('Mentions');
+const { validationResult } = require('express-validator');
+const repository = require('../src/repositories/mentions-repository');
 
 exports.listMentions = async(req, res) => {
     try {
-        const data = await Mentions.find({}, 'friend mention -_id');
+        const data = await repository.listMentions();
         res.status(200).send(data);
     } catch (error) {
         res.status(500).send({message: 'Falha ao carregar as menções.'});
@@ -11,16 +11,17 @@ exports.listMentions = async(req, res) => {
 };
 
 exports.createMention = async(req, res, next) => {
+    const { errors } = validationResult(req);
+    
+    if (errors.length > 0) {
+        return res.status(400).send({ message: errors });
+    }
+
     try {
-        const mention = new Mentions({
+        await repository.createMention({
             friend: req.body.friend,
             mention: req.body.mention
         });
-
-        console.log(mention);
-
-        await mention.save();
-
         res.status(201).send({message: 'Menção cadastrada com sucesso!'});
     } catch (error) {
         console.log(`Error: ${error}`);
