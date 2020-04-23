@@ -9,9 +9,9 @@ const app = express();
 
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING, {
     useUnifiedTopology: true,
-    useFindAndModify: true,
+    useFindAndModify: false,
     useNewUrlParser: true,
-    useCreateIndex: true 
+    useCreateIndex: true
 });
 
 const db = mongoose.connection;
