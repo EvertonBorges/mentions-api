@@ -11,8 +11,12 @@ exports.createMention = async data => {
     await mention.save();
 }
 
-exports.updateMension = async (id, data) => {
+exports.updateMention = async (id, data) => {
     await Mentions.findByIdAndUpdate(id, {
         $set: data
     });
+}
+
+exports.deleteMention = async id => {
+    await Mentions.findByIdAndDelete(id);
 }
