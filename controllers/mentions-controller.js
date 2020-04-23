@@ -3,7 +3,7 @@ const Mentions = mongoose.model('Mentions');
 
 exports.listMentions = async(req, res) => {
     try {
-        const data = await Mentions.find({});
+        const data = await Mentions.find({}, 'friend mention -_id');
         res.status(200).send(data);
     } catch (error) {
         res.status(500).send({message: 'Falha ao carregar as menções.'});
